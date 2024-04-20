@@ -14,10 +14,10 @@ const HomePage = () => {
 
   const [sortType, setSortType] = useState("recent")
 
-  const getUserProfileAndRepos = useCallback(async (username="burakorkmez") => {
+  const getUserProfileAndRepos = useCallback(async (username="sheeshhhhhh") => {
     setLoading(true)
     try {
-      const res = await fetch(`http://localhost:5000/api/users/profile/${username}`)
+      const res = await fetch(`/api/users/profile/${username}`)
       const { repos, userProfile } = await res.json()
 
       setUserProfile(userProfile)
@@ -70,7 +70,7 @@ const HomePage = () => {
     <div className='m-4 '>
       <Search OnSearch={OnSearch} />
       {repos.length > 0 && < SortRepos onSort={onSort} sortType={sortType} />}
-      <div className='flex gap-4 flex-col lg:flex-row justify-center '>
+      <div className='flex gap-4 flex-col lg:flex-row justify-center relative'>
         {userProfile && !loading && <ProfileInfo userProfile={userProfile} /> }
         {!loading && <Repos repos={repos} />}
         
