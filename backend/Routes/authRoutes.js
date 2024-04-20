@@ -7,9 +7,9 @@ router.get("/github", passport.authenticate('github', { scope: [ 'user:email' ] 
 
 router.get(
 	"/github/callback",
-	passport.authenticate("github", { failureRedirect: "http://localhost:3000/login" }),
+	passport.authenticate("github", { failureRedirect: `${CLIENT_BASE_URL}login` }),
 	function (req, res) {
-		res.redirect("http://localhost:3000");
+		res.redirect(process.env.CLIENT_BASE_URL);
 	}
 );
 
