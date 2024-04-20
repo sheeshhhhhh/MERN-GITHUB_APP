@@ -1,18 +1,22 @@
-import express from 'express'
-import dotenv from 'dotenv'
 import cors from 'cors'
-import passport from 'passport'
+import dotenv from 'dotenv'
+import express from 'express'
 import session from 'express-session'
+import passport from 'passport'
 
 import './passport/githubauth.js'
 
-import userRoutes from './Routes/userRoutes.js'
-import exploreRoutes from './Routes/exploreRoutes.js'
 import authRoutes from './Routes/authRoutes.js'
+import exploreRoutes from './Routes/exploreRoutes.js'
+import userRoutes from './Routes/userRoutes.js'
 
+import path from 'path'
 import { connecttodb } from './DB/connectDB.js'
 
 const app = express()
+const PORT = process.env.PORT || 5000
+
+const __dirname = path.resolve()
 
 app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 // Initialize Passport!  Also use passport.session() middleware, to support
@@ -28,8 +32,14 @@ app.use("/api/users", userRoutes)
 app.use("/api/explore", exploreRoutes)
 app.use("/api/auth", authRoutes)
 
-app.listen(5000, () => {
-    console.log("server has started on port 5000")
+app.use(express.static(path.join(__dirname, "frontend/dist")))
+
+app.get("*", (req, res) => {
+    res.send(path.join(__dirname, "frontend", "dist", "index.html"))
+})
+
+app.listen(PORT, () => {
+    console.log("server has started on port", PORT)
 
     connecttodb()
 })
